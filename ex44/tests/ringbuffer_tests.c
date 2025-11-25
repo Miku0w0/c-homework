@@ -31,24 +31,24 @@ char *test_write_read()
 
 char *test_puts_get_all()
 {
-    bstring data = bfromcstr("test");
-    RingBuffer_puts(rb, data);
-    bstring result = RingBuffer_get_all(rb);
-    mu_assert(biseq(data, result), "RingBuffer_get_all did not return the correct data");
-    bdestroy(data);
-    bdestroy(result);
+    bstring data = bfromcstr("test"); // 转换为bstring类型
+    RingBuffer_puts(rb, data); // 把data写入rb
+    bstring result = RingBuffer_get_all(rb); // 读取全部已存储在rb的数据
+    mu_assert(biseq(data, result), "RingBuffer_get_all did not return the correct data"); // 比较函数
+    bdestroy(data); // 释放
+    bdestroy(result); // 释放
 
     return NULL;
 }
 
 char *test_puts_gets()
 {
-    bstring data = bfromcstr("test");
-    RingBuffer_puts(rb, data);
-    bstring result = RingBuffer_gets(rb, 4);
-    mu_assert(biseq(data, result), "RingBuffer_gets did not return the correct data");
-    bdestroy(data);
-    bdestroy(result);
+    bstring data = bfromcstr("test"); // 普通字符串转换为bstring类型
+    RingBuffer_puts(rb, data); // 把data写入rb
+    bstring result = RingBuffer_gets(rb, 4); // 从rb读取指定长度数据
+    mu_assert(biseq(data, result), "RingBuffer_gets did not return the correct data"); // 比较函数
+    bdestroy(data); // 释放
+    bdestroy(result); // 释放
 
     return NULL;
 }
@@ -57,6 +57,7 @@ char *test_destroy()
 {
     mu_assert(rb != NULL, "Failed to create RingBuffer#2");
     RingBuffer_destroy(rb);
+    rb = NULL; // 防止悬空指针
 
     return NULL;
 }
