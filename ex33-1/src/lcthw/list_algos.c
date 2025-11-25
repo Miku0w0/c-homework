@@ -112,3 +112,47 @@ List *List_split_mid(List *list)
 
     return listsecond;
 }
+
+int List_insert_sorted(List *list, void *value, List_compare cmp)
+{
+    check(list != NULL, "List is NULL.");
+    check(cmp != NULL, "Compare function is NULL.");
+
+    ListNode *node = calloc(1, sizeof(ListNode));
+    check_mem(node);
+
+    node->value = value;
+
+    // 空链表 或 插在头部
+    if (list->first == NULL || cmp(value, list->first->value) < 0)
+    {
+        node->next = list->first;
+        list->first = node;
+        if (list->last == NULL)
+            list->last = node;
+        list->count++;
+        return 0;
+    }
+
+    // 查找插入位置
+    ListNode *cur = list->first;
+    while (cur->next != NULL && cmp(value, cur->next->value) > 0)
+    {
+        cur = cur->next;
+    }
+
+    node->next = cur->next;
+    cur->next = node;
+
+    // 如果插在尾部
+    if (node->next == NULL)
+    {
+        list->last = node;
+    }
+
+    list->count++;
+    return 0;
+
+error:
+    return -1;
+}

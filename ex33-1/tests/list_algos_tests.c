@@ -2,16 +2,16 @@
 #include <lcthw/list_algos.h>
 #include <assert.h>
 #include <string.h>
+#include <time.h>
 
 char *values[] = {"XXXX", "1234", "abcd", "xjvef", "NDSS"};
 #define NUM_VALUES 5
 
 List *create_words()
 {
-    int i = 0;
     List *words = List_create();
 
-    for (i = 0; i < NUM_VALUES; i++)
+    for (int i = 0; i < NUM_VALUES; i++)
     {
         List_push(words, values[i]);
     }
@@ -77,12 +77,52 @@ char *test_merge_sort()
     return NULL;
 }
 
+char *test_insert_sorted()
+{
+    List *list = List_create();
+
+    List_insert_sorted(list, "delta", (List_compare)strcmp);
+    List_insert_sorted(list, "alpha", (List_compare)strcmp);
+    List_insert_sorted(list, "charlie", (List_compare)strcmp);
+    List_insert_sorted(list, "bravo", (List_compare)strcmp);
+
+    mu_assert(strcmp(list->first->value, "alpha") == 0, "alpha should be first");
+    mu_assert(strcmp(list->last->value, "delta") == 0, "delta should be last");
+
+    ListNode *n = list->first;
+    mu_assert(strcmp(n->value, "alpha") == 0, "1");
+    n = n->next;
+    mu_assert(strcmp(n->value, "bravo") == 0, "2");
+    n = n->next;
+    mu_assert(strcmp(n->value, "charlie") == 0, "3");
+    n = n->next;
+    mu_assert(strcmp(n->value, "delta") == 0, "4");
+
+    List_destroy(list);
+    return NULL;
+}
+
 char *all_tests()
 {
     mu_suite_start();
 
+    double start = clock();
     mu_run_test(test_bubble_sort);
+    double end = clock();
+    double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("test_bubble_sort took %f seconds to execute \n", cpu_time_used);
+
+    start = clock();
     mu_run_test(test_merge_sort);
+    end = clock();
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("test_merge_sort took %f seconds to execute \n", cpu_time_used);
+
+    start = clock();
+    mu_run_test(test_insert_sorted);
+    end = clock();
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("test_insert_sorted took %f seconds\n", cpu_time_used);
 
     return NULL;
 }
