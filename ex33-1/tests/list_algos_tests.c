@@ -109,7 +109,7 @@ char *all_tests()
     double start = clock();
     mu_run_test(test_bubble_sort);
     double end = clock();
-    double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+    double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;// 周期数转为秒
     printf("test_bubble_sort took %f seconds to execute \n", cpu_time_used);
 
     start = clock();

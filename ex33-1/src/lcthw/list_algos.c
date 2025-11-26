@@ -84,33 +84,34 @@ List *List_merge_sort(List *list, List_compare cmp)
 
 List *List_split_mid(List *list)
 {
-    if (!list || !list->first || !list->first->next)
+    if (!list || !list->first || !list->first->next) // 空链表
     {
         return NULL;
     }
 
-    int cnt = List_count(list);
-    int c1 = 1, c2 = 0;
+    int cnt = List_count(list); // 链表的节点数
+    int c1 = 1, c2 = 0; // c1为前半段，c2为后半段
     ListNode *slow = list->first;
     ListNode *fast = list->first->next;
-    while (fast && fast->next)
+    while (fast && fast->next) // 都不为空，直到快指针指向NULL
     {
-        slow = slow->next;
-        fast = fast->next->next;
+        slow = slow->next; // 一步
+        fast = fast->next->next; // 两步
         c1++;
     }
     c2 = cnt - c1;
 
     List *listsecond = List_create();
-    listsecond->first = slow->next;
-    listsecond->first->prev = NULL;
-    listsecond->last = list->last;
-    listsecond->count = c2;
-    list->last = slow;
-    slow->next = NULL;
-    list->count = c1;
+    listsecond->first = slow->next; // 后半部分的头
+    listsecond->first->prev = NULL; // 前后链表断开
+    listsecond->last = list->last;  // 后半部分的尾
+    listsecond->count = c2;         // 后半部分的长度
 
-    return listsecond;
+    list->last = slow; // 前半部分的尾
+    slow->next = NULL; // 前后链表断开
+    list->count = c1;  // 前半部分的长度 
+
+    return listsecond; // 返回给上一层递归
 }
 
 int List_insert_sorted(List *list, void *value, List_compare cmp)
@@ -118,7 +119,7 @@ int List_insert_sorted(List *list, void *value, List_compare cmp)
     check(list != NULL, "List is NULL.");
     check(cmp != NULL, "Compare function is NULL.");
 
-    ListNode *node = calloc(1, sizeof(ListNode));
+    ListNode *node = calloc(1, sizeof(ListNode)); // 开辟空间
     check_mem(node);
 
     node->value = value;
@@ -128,20 +129,20 @@ int List_insert_sorted(List *list, void *value, List_compare cmp)
     {
         node->next = list->first;
         list->first = node;
-        if (list->last == NULL)
+        if (list->last == NULL) // 如果是新链表，要更新last
             list->last = node;
         list->count++;
         return 0;
     }
 
     // 查找插入位置
-    ListNode *cur = list->first;
+    ListNode *cur = list->first; // 找第一个比新值大的节点
     while (cur->next != NULL && cmp(value, cur->next->value) > 0)
     {
-        cur = cur->next;
+        cur = cur->next; // 第一个 比新值大的节点 之前的节点
     }
 
-    node->next = cur->next;
+    node->next = cur->next; // 插在cur后面，cur->next才是第一个比新值大的节点
     cur->next = node;
 
     // 如果插在尾部
