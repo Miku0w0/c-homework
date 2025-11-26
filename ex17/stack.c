@@ -5,63 +5,55 @@
 typedef struct
 {
     int items[MAX_SIZE]; // 存储元素
-    int top; // 栈顶索引
+    int top;             // 栈顶索引
 } Stack;
 
-// 栈的初始化
 void initializeStack(Stack *s)
-{
-    s->top = -1; // 标记为空
+{ 
+    s->top = -1;
 }
 
-// 检查栈是否为空
 int isEmpty(Stack *s)
-{
-    return s->top == -1; // 标记为空
+{ 
+    return s->top == -1;
 }
 
-// 检查栈是否已满
 int isFull(Stack *s)
-{
-    return s->top == MAX_SIZE - 1; // 标记为满
+{ 
+    return s->top == MAX_SIZE - 1;
 }
 
-// 入栈
 void push(Stack *s, int item)
-{
+{ 
     if (isFull(s))
-    {
+    { 
         printf("Stack is full!\n");
     }
     else
     {
-        s->top ++;
-        s->items[s->top] = item;
+        s->top++;                // 先让top指向新元素的位置
+        s->items[s->top] = item; // 再放入元素
     }
 }
 
-// 出栈
 int pop(Stack *s)
-{
+{ 
     if (isEmpty(s))
-    {
+    { 
         printf("Stack is empty!\n");
-        return -1; // 表示栈空
+        return -1;
     }
-
-        int value = s->items[s->top];
-        s->top --;
-        return value;
-    
+    int value = s->items[s->top]; // 先取出栈顶元素
+    s->top--;                     // 再让top指向下一个元素
+    return value;
 }
 
-// 查看栈顶元素
 int peek(Stack *s)
-{
+{ 
     if (isEmpty(s))
     {
         printf("Stack is empty!\n");
-        return -1; // 返回一个标识值，表示栈空
+        return -1;
     }
     else
     {
@@ -69,7 +61,6 @@ int peek(Stack *s)
     }
 }
 
-// 主函数，演示栈操作
 int main()
 {
     Stack s;
