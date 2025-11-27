@@ -73,30 +73,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-/*
-    Heap vs Stack 对比：
-
-    1. 内存分配：
-       - Heap（堆版本）：使用 malloc 分配结构体和 strdup 分配字符串，需要手动 free
-       - Stack（栈版本）：结构体和字符串（用了strcpy）直接在栈上分配，函数结束后自动释放，不需要 free
-
-    2. 访问方式：
-       - Heap：使用指针访问成员，例如 joe->age
-       - Stack：直接访问结构体成员，例如 joe.age
-
-    3. 字符串处理：
-       - Heap：name 是 char*，用 strdup 复制字符串到堆上
-       - Stack：name 是 char 数组，可以直接 strcpy 赋值，不需要 strdup
-
-    4. 内存管理：
-       - Heap：如果不调用 Person_destroy，会造成内存泄露
-       - Stack：结构体自动释放，不会泄露
-
-    5. 函数传参：
-       - Heap：通常传指针给函数（Person_print(joe)）
-       - Stack：可以直接传结构体本身（Person_print(joe)），函数内部会复制一份结构体
-
-    总结：
-    Heap 版本更灵活，适合动态数量的对象，但需要手动管理内存
-    Stack 版本简单、安全，但对象数量和生命周期在编译时就固定
-    */
